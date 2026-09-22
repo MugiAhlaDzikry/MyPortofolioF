@@ -5,6 +5,7 @@ import Footer from '../components/Layout/Footer';
 import Hero from '../sections/Hero';
 import Skills from '../sections/Skills';
 import Projects from '../sections/Projects';
+import GithubActivity from '../sections/GithubActivity';
 import Experience from '../sections/Experience';
 import Awards from '../sections/Awards';
 import Education from '../sections/Education';
@@ -22,6 +23,7 @@ export default function Portfolio() {
         <Hero />
         <Skills />
         <Projects />
+        <GithubActivity />
         <Experience />
         <Awards />
         <Education />
