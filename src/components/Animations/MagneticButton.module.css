@@ -1,0 +1,15 @@
+.magneticBtn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  position: relative;
+  will-change: transform;
+}
+
+.magneticBtnText {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  will-change: transform;
+  gap: 0.5rem;
+}

@@ -1,0 +1,180 @@
+/* ==========================================
+   DESIGN SYSTEM — CSS Custom Properties
+   Theme: Dual Theme (Clean White & Stealth Obsidian Dark)
+   ========================================== */
+
+:root {
+  /* ---- Colors (Light Theme Default) ---- */
+  --bg-primary: #FFFFFF;
+  --bg-secondary: #FAFAFA;
+  --bg-tertiary: #F5F5F5;
+  --bg-elevated: #FFFFFF;
+  --bg-dark: #0A0A0A;
+  
+  --bg-card: rgba(255, 255, 255, 0.7);
+  --bg-card-hover: rgba(255, 255, 255, 0.9);
+  --bg-tag: rgba(255, 255, 255, 0.85);
+  --bg-input: rgba(255, 255, 255, 0.85);
+  --bg-badge: rgba(0, 0, 0, 0.04);
+  --bg-availability: linear-gradient(135deg, rgba(240, 253, 244, 0.75) 0%, rgba(255, 255, 255, 0.85) 100%);
+  --border-availability: rgba(74, 222, 128, 0.35);
+
+  --text-primary: #0A0A0A;
+  --text-secondary: #555555;
+  --text-tertiary: #999999;
+  --text-muted: #CCCCCC;
+  --text-white: #FFFFFF;
+  --text-inverted: #FFFFFF;
+
+  --accent: #0A0A0A;
+  --accent-dim: #E5E5E5;
+  --accent-hover: #222222;
+
+  --border: #EBEBEB;
+  --border-light: #F0F0F0;
+  --border-hover: #CCCCCC;
+  --border-glass: rgba(255, 255, 255, 0.9);
+  --border-tag: rgba(0, 0, 0, 0.08);
+  --border-input: rgba(0, 0, 0, 0.09);
+
+  --navbar-bg: rgba(255, 255, 255, 0.85);
+  --grid-dot: rgba(0, 0, 0, 0.14);
+  --grid-size: 28px 28px;
+  --noise-opacity: 0.03;
+
+  /* ---- Typography ---- */
+  --font-heading: 'Geist', sans-serif;
+  --font-body: 'Geist', sans-serif;
+  --font-mono: 'Geist Mono', monospace;
+
+  --fs-display: clamp(3rem, 7vw, 6rem);
+  --fs-h1: clamp(2.25rem, 4.5vw, 4rem);
+  --fs-h2: clamp(1.75rem, 3.5vw, 2.75rem);
+  --fs-h3: clamp(1.25rem, 2vw, 1.75rem);
+  --fs-h4: clamp(1.063rem, 1.3vw, 1.25rem);
+  --fs-body: clamp(0.938rem, 1vw, 1.063rem);
+  --fs-small: clamp(0.813rem, 0.9vw, 0.875rem);
+  --fs-xs: clamp(0.688rem, 0.8vw, 0.75rem);
+
+  --fw-light: 300;
+  --fw-regular: 400;
+  --fw-medium: 500;
+  --fw-semibold: 600;
+  --fw-bold: 700;
+  --fw-black: 900;
+
+  --lh-tight: 1.1;
+  --lh-snug: 1.25;
+  --lh-normal: 1.5;
+  --lh-relaxed: 1.7;
+
+  --ls-tight: -0.03em;
+  --ls-normal: 0em;
+  --ls-wide: 0.05em;
+  --ls-wider: 0.1em;
+  --ls-widest: 0.2em;
+
+  /* ---- Spacing ---- */
+  --space-xs: 0.25rem;
+  --space-sm: 0.5rem;
+  --space-md: 1rem;
+  --space-lg: 1.5rem;
+  --space-xl: 2rem;
+  --space-2xl: 3rem;
+  --space-3xl: 4rem;
+  --space-4xl: 6rem;
+  --space-5xl: 8rem;
+  --space-section: clamp(5rem, 10vh, 8rem);
+
+  /* ---- Layout ---- */
+  --max-width: 1200px;
+  --container-padding: clamp(1.5rem, 4vw, 4rem);
+  --navbar-height: 4.5rem;
+
+  /* ---- Borders ---- */
+  --radius-sm: 4px;
+  --radius-md: 8px;
+  --radius-lg: 12px;
+  --radius-xl: 16px;
+  --radius-2xl: 24px;
+  --radius-full: 9999px;
+
+  /* ---- Shadows ---- */
+  --shadow-sm: 0 1px 3px rgba(0, 0, 0, 0.04);
+  --shadow-md: 0 4px 16px rgba(0, 0, 0, 0.06);
+  --shadow-lg: 0 8px 32px rgba(0, 0, 0, 0.08);
+  --shadow-xl: 0 16px 48px rgba(0, 0, 0, 0.1);
+  --shadow-glow: 0 0 20px rgba(0, 0, 0, 0.08);
+  --shadow-glow-strong: 0 0 30px rgba(0, 0, 0, 0.16);
+
+  /* ---- Transitions ---- */
+  --ease-out-expo: cubic-bezier(0.19, 1, 0.22, 1);
+  --ease-out-quart: cubic-bezier(0.165, 0.84, 0.44, 1);
+  --ease-in-out-cubic: cubic-bezier(0.65, 0, 0.35, 1);
+  --ease-elastic: cubic-bezier(0.68, -0.55, 0.265, 1.55);
+  --ease-smooth: cubic-bezier(0.4, 0, 0.2, 1);
+
+  --duration-fast: 0.2s;
+  --duration-normal: 0.4s;
+  --duration-slow: 0.6s;
+  --duration-slower: 0.8s;
+  --duration-slowest: 1.2s;
+
+  /* ---- Z-index ---- */
+  --z-cursor: 9999;
+  --z-modal: 1000;
+  --z-navbar: 900;
+  --z-overlay: 800;
+  --z-dropdown: 700;
+  --z-sticky: 100;
+}
+
+/* ==========================================
+   DARK THEME — Stealth Obsidian Luxury Mode
+   ========================================== */
+[data-theme="dark"],
+.dark {
+  --bg-primary: #09090B;
+  --bg-secondary: #111115;
+  --bg-tertiary: #18181D;
+  --bg-elevated: #1F1F26;
+  --bg-dark: #FFFFFF;
+
+  --bg-card: rgba(22, 22, 28, 0.7);
+  --bg-card-hover: rgba(30, 30, 38, 0.9);
+  --bg-tag: rgba(28, 28, 35, 0.85);
+  --bg-input: rgba(18, 18, 23, 0.85);
+  --bg-badge: rgba(255, 255, 255, 0.06);
+  --bg-availability: linear-gradient(135deg, rgba(20, 40, 30, 0.75) 0%, rgba(18, 18, 24, 0.85) 100%);
+  --border-availability: rgba(34, 197, 94, 0.3);
+
+  --text-primary: #F4F4F6;
+  --text-secondary: #A1A1AB;
+  --text-tertiary: #71717E;
+  --text-muted: #3F3F4B;
+  --text-white: #09090B;
+  --text-inverted: #09090B;
+
+  --accent: #F4F4F6;
+  --accent-dim: #272732;
+  --accent-hover: #E4E4E8;
+
+  --border: #23232C;
+  --border-light: #1A1A22;
+  --border-hover: #3E3E4D;
+  --border-glass: rgba(255, 255, 255, 0.1);
+  --border-tag: rgba(255, 255, 255, 0.1);
+  --border-input: rgba(255, 255, 255, 0.12);
+
+  --navbar-bg: rgba(9, 9, 11, 0.85);
+  --grid-dot: rgba(255, 255, 255, 0.12);
+  --grid-size: 28px 28px;
+  --noise-opacity: 0.04;
+
+  --shadow-sm: 0 1px 3px rgba(0, 0, 0, 0.4);
+  --shadow-md: 0 4px 16px rgba(0, 0, 0, 0.5);
+  --shadow-lg: 0 8px 32px rgba(0, 0, 0, 0.6);
+  --shadow-xl: 0 16px 48px rgba(0, 0, 0, 0.7);
+  --shadow-glow: 0 0 25px rgba(255, 255, 255, 0.06);
+  --shadow-glow-strong: 0 0 35px rgba(255, 255, 255, 0.12);
+}

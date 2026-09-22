@@ -1,0 +1,1142 @@
+.projects {
+  background: transparent;
+  position: relative;
+  overflow: hidden;
+}
+
+/* ---- Decorative Background for Glassmorphism ---- */
+.projects::before,
+.projects::after {
+  content: '';
+  position: absolute;
+  border-radius: 50%;
+  filter: blur(100px);
+  z-index: 0;
+}
+
+.projects::before {
+  width: 500px;
+  height: 500px;
+  background: rgba(0, 0, 0, 0.03);
+  /* Subtle shadow blob */
+  top: 10%;
+  left: -100px;
+}
+
+.projects::after {
+  width: 600px;
+  height: 600px;
+  background: rgba(0, 0, 0, 0.02);
+  bottom: -200px;
+  right: -100px;
+}
+
+/* Ensure content sits above background blobs */
+.projects>div {
+  position: relative;
+  z-index: 2;
+}
+
+/* ---- Floating Glass Shards ---- */
+.glassParticles {
+  position: absolute;
+  inset: 0;
+  overflow: hidden;
+  z-index: 1;
+  pointer-events: none;
+}
+
+.shard {
+  position: absolute;
+  background: linear-gradient(135deg, rgba(255, 255, 255, 0.4) 0%, rgba(255, 255, 255, 0.05) 100%);
+  backdrop-filter: blur(8px);
+  -webkit-backdrop-filter: blur(8px);
+  border: 1px solid rgba(255, 255, 255, 0.6);
+  box-shadow: 0 8px 32px rgba(0, 0, 0, 0.05);
+  animation: float 20s infinite linear;
+}
+
+/* Distinct shapes using clip-path */
+.shard1 {
+  width: 80px;
+  height: 80px;
+  top: 15%;
+  left: 10%;
+  clip-path: polygon(50% 0%, 100% 50%, 50% 100%, 0% 50%);
+  animation-duration: 25s;
+  animation-delay: -5s;
+}
+
+.shard2 {
+  width: 120px;
+  height: 90px;
+  top: 60%;
+  left: 5%;
+  clip-path: polygon(20% 0%, 80% 0%, 100% 100%, 0% 100%);
+  animation-duration: 30s;
+  animation-delay: -12s;
+}
+
+.shard3 {
+  width: 60px;
+  height: 100px;
+  top: 25%;
+  right: 8%;
+  clip-path: polygon(0% 15%, 15% 15%, 15% 0%, 85% 0%, 85% 15%, 100% 15%, 100% 85%, 85% 85%, 85% 100%, 15% 100%, 15% 85%, 0% 85%);
+  animation-duration: 22s;
+  animation-delay: -8s;
+}
+
+.shard4 {
+  width: 150px;
+  height: 150px;
+  bottom: 10%;
+  right: 15%;
+  clip-path: polygon(50% 0%, 0% 100%, 100% 100%);
+  animation-duration: 35s;
+  animation-delay: -2s;
+}
+
+.shard5 {
+  width: 70px;
+  height: 70px;
+  top: 45%;
+  left: 50%;
+  clip-path: polygon(30% 0%, 70% 0%, 100% 30%, 100% 70%, 70% 100%, 30% 100%, 0% 70%, 0% 30%);
+  animation-duration: 18s;
+  animation-delay: -15s;
+}
+
+@keyframes float {
+  0% {
+    transform: translateY(0) rotate(0deg);
+  }
+
+  50% {
+    transform: translateY(-30px) rotate(180deg);
+  }
+
+  100% {
+    transform: translateY(0) rotate(360deg);
+  }
+}
+
+.projectsHeader {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  margin-bottom: var(--space-3xl);
+}
+
+.projectsHeading {
+  font-size: var(--fs-h2);
+  font-weight: var(--fw-bold);
+  color: var(--text-primary);
+  margin-top: var(--space-xs);
+  margin-bottom: var(--space-sm);
+  line-height: var(--lh-tight);
+}
+
+.projectsSubtext {
+  font-size: var(--fs-body);
+  color: var(--text-secondary);
+  line-height: var(--lh-relaxed);
+  max-width: 600px;
+}
+
+/* ---- 2x2 Grid ---- */
+.projectGrid {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: var(--space-xl);
+  margin-bottom: var(--space-3xl);
+}
+
+/* ---- Project Card ---- */
+.projectCard {
+  --mouse-x: 50%;
+  --mouse-y: 50%;
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  background: var(--bg-card);
+  backdrop-filter: blur(16px);
+  -webkit-backdrop-filter: blur(16px);
+  border: 1px solid var(--border-glass);
+  border-radius: 16px;
+  overflow: hidden;
+  cursor: pointer;
+  height: 100%;
+  transition: transform 0.5s cubic-bezier(0.16, 1, 0.3, 1),
+    box-shadow 0.5s cubic-bezier(0.16, 1, 0.3, 1),
+    border-color 0.4s ease,
+    background 0.5s ease;
+  box-shadow: var(--shadow-card);
+}
+
+.projectCard:hover {
+  transform: translateY(-6px);
+  background: var(--bg-card-hover);
+  backdrop-filter: blur(24px);
+  -webkit-backdrop-filter: blur(24px);
+  border-color: var(--border-hover);
+  box-shadow: var(--shadow-card-hover);
+  z-index: 10;
+}
+
+/* Cursor spotlight — follows mouse, visible on hover */
+.cardSpotlight {
+  position: absolute;
+  inset: 0;
+  z-index: 3;
+  pointer-events: none;
+  opacity: 0;
+  transition: opacity 0.4s ease;
+  background: radial-gradient(300px circle at var(--mouse-x) var(--mouse-y),
+      rgba(82, 82, 95, 0.08) 0%,
+      transparent 70%);
+}
+
+.projectCard:hover .cardSpotlight {
+  opacity: 1;
+}
+
+/* Shimmer — sweeps diagonally across card on hover */
+.cardShimmer {
+  position: absolute;
+  top: 0;
+  left: -100%;
+  width: 60%;
+  height: 100%;
+  background: linear-gradient(105deg,
+      transparent 20%,
+      rgba(255, 255, 255, 0) 40%,
+      rgba(255, 255, 255, 0.5) 50%,
+      rgba(255, 255, 255, 0) 60%,
+      transparent 80%);
+  z-index: 5;
+  pointer-events: none;
+}
+
+.projectCard:hover .cardShimmer {
+  animation: shimmerSweep 0.7s ease forwards;
+}
+
+@keyframes shimmerSweep {
+  0% {
+    left: -100%;
+  }
+
+  100% {
+    left: 200%;
+  }
+}
+
+/* Glow — soft edge glow on hover */
+.cardGlow {
+  position: absolute;
+  inset: -1px;
+  border-radius: 16px;
+  opacity: 0;
+  z-index: 1;
+  pointer-events: none;
+  background: linear-gradient(135deg,
+      rgba(99, 102, 241, 0.05) 0%,
+      rgba(168, 85, 247, 0.03) 50%,
+      rgba(59, 130, 246, 0.05) 100%);
+  transition: opacity 0.5s ease;
+}
+
+.projectCard:hover .cardGlow {
+  opacity: 1;
+}
+
+/* ---- Image with bezel (padding around image) ---- */
+.cardImageWrapper {
+  padding: 0.75rem 0.75rem 0 0.75rem;
+  z-index: 2;
+  position: relative;
+}
+
+.cardImageContainer {
+  width: 100%;
+  aspect-ratio: 16 / 9;
+  border-radius: 10px;
+  overflow: hidden;
+  position: relative;
+  background: var(--bg-tertiary);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.06);
+}
+
+.cardImageBackdrop {
+  position: absolute;
+  inset: -20px;
+  background-size: cover;
+  background-position: center;
+  filter: blur(24px) brightness(0.65);
+  opacity: 0.55;
+  transform: scale(1.2);
+  pointer-events: none;
+}
+
+.cardImage {
+  width: 100%;
+  height: 100%;
+  aspect-ratio: 16 / 9;
+  object-fit: contain;
+  border-radius: 10px;
+  display: block;
+  position: relative;
+  z-index: 1;
+  transition: transform 0.6s cubic-bezier(0.16, 1, 0.3, 1),
+    box-shadow 0.5s ease;
+}
+
+.projectCard:hover .cardImage {
+  transform: scale(1.04);
+}
+
+.cardPlaceholder {
+  width: 100%;
+  aspect-ratio: 16 / 9;
+  border-radius: 10px;
+  background: linear-gradient(145deg, #f0f0f4 0%, #e4e4ea 100%);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.cardNumber {
+  font-family: var(--font-heading);
+  font-size: 4rem;
+  font-weight: var(--fw-black);
+  color: rgba(0, 0, 0, 0.06);
+  user-select: none;
+  transition: transform 0.5s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+.projectCard:hover .cardNumber {
+  transform: scale(1.1);
+}
+
+/* ---- Card Body ---- */
+.cardBody {
+  padding: 1.5rem;
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  position: relative;
+  z-index: 2;
+  transition: transform 0.5s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+.projectCard:hover .cardBody {
+  transform: translateY(-3px);
+}
+
+.cardMeta {
+  display: flex;
+  align-items: center;
+  gap: var(--space-sm);
+  font-family: var(--font-mono);
+  font-size: 0.7rem;
+  color: var(--text-tertiary);
+  margin-bottom: 0.5rem;
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+  transition: transform 0.5s cubic-bezier(0.16, 1, 0.3, 1) 0.02s;
+}
+
+.projectCard:hover .cardMeta {
+  transform: translateX(3px);
+}
+
+.cardTitle {
+  font-size: 1.05rem;
+  font-weight: var(--fw-bold);
+  color: var(--text-primary);
+  margin-bottom: 0.35rem;
+  transition: color 0.3s ease,
+    transform 0.5s cubic-bezier(0.16, 1, 0.3, 1) 0.04s;
+  line-height: 1.3;
+}
+
+.projectCard:hover .cardTitle {
+  color: #4338ca;
+  transform: translateX(3px);
+}
+
+.cardDescription {
+  font-size: 0.82rem;
+  color: var(--text-secondary);
+  line-height: 1.55;
+  margin-bottom: 0.85rem;
+  flex-grow: 1;
+  display: -webkit-box;
+  -webkit-line-clamp: 2;
+  -webkit-box-orient: vertical;
+  overflow: hidden;
+  transition: transform 0.5s cubic-bezier(0.16, 1, 0.3, 1) 0.06s;
+}
+
+.projectCard:hover .cardDescription {
+  transform: translateX(3px);
+}
+
+.cardFooter {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-top: auto;
+}
+
+.cardTech {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.3rem;
+}
+
+.techTag {
+  font-family: var(--font-mono);
+  font-size: 0.7rem;
+  color: var(--text-secondary);
+  background: var(--bg-badge);
+  padding: 0.2rem 0.55rem;
+  border-radius: 6px;
+  border: 1px solid var(--border);
+  transition: all 0.4s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+.projectCard:hover .techTag {
+  background: rgba(99, 102, 241, 0.06);
+  border-color: rgba(99, 102, 241, 0.15);
+  color: #4338ca;
+  transform: translateY(-2px);
+}
+
+.projectCard:hover .techTag:nth-child(1) {
+  transition-delay: 0.04s;
+}
+
+.projectCard:hover .techTag:nth-child(2) {
+  transition-delay: 0.08s;
+}
+
+.projectCard:hover .techTag:nth-child(3) {
+  transition-delay: 0.12s;
+}
+
+.projectCard:hover .techTag:nth-child(4) {
+  transition-delay: 0.16s;
+}
+
+.cardArrow {
+  font-size: 1.15rem;
+  color: var(--text-muted);
+  transition: all 0.5s cubic-bezier(0.16, 1, 0.3, 1);
+  opacity: 0;
+  transform: translateX(-10px) rotate(-45deg);
+}
+
+.projectCard:hover .cardArrow {
+  opacity: 1;
+  transform: translateX(0) rotate(0deg);
+  color: #4338ca;
+}
+
+/* ---- View All Button ---- */
+.viewAllWrapper {
+  display: flex;
+  justify-content: center;
+  margin-top: var(--space-xl);
+}
+
+.viewAllBtn {
+  display: flex;
+  align-items: center;
+  gap: var(--space-sm);
+  padding: 1rem 2.5rem;
+  background: var(--text-primary);
+  color: var(--text-white);
+  border-radius: var(--radius-full);
+  font-weight: var(--fw-semibold);
+  transition: background 0.3s ease;
+}
+
+.viewAllBtn:hover {
+  background: var(--accent-hover);
+}
+
+/* ---- Modal Overlay ---- */
+.modalOverlay {
+  position: fixed;
+  inset: 0;
+  background: rgba(0, 0, 0, 0.5);
+  backdrop-filter: blur(10px);
+  z-index: 1000;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: var(--space-xl);
+  overscroll-behavior: contain;
+}
+
+/* ---- Immersive Modal Container ---- */
+.modal {
+  background: var(--bg-primary);
+  width: 100%;
+  max-width: 1100px;
+  height: 85vh;
+  max-height: 850px;
+  min-height: 520px;
+  border-radius: var(--radius-xl);
+  overflow: hidden;
+  position: relative;
+  display: flex;
+  flex-direction: row;
+  border: 1px solid var(--border);
+  box-shadow: 0 40px 100px rgba(0, 0, 0, 0.25);
+  overscroll-behavior: contain;
+}
+
+/* Bold Close Button */
+.modalClose {
+  position: absolute;
+  top: 1.5rem;
+  right: 1.5rem;
+  width: 44px;
+  height: 44px;
+  border-radius: 50%;
+  background: var(--bg-secondary);
+  border: 1px solid var(--border);
+  color: var(--text-primary);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  z-index: 100;
+  transition: all 0.4s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+.modalClose:hover {
+  background: var(--text-white);
+  transform: rotate(90deg) scale(1.15);
+}
+
+/* ---- Bold Visual Section ---- */
+.modalVisual {
+  width: 48%;
+  height: 100%;
+  background: var(--bg-tertiary);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  position: relative;
+  padding: 3.5rem 3rem;
+  flex-shrink: 0;
+  /* Breathing room for the stack */
+}
+
+/* Portrait-optimized modal: wider visual section */
+.modalVisual.portraitVisual {
+  width: 42%;
+  padding: 2.5rem 2rem;
+}
+
+/* Subtle pattern for the gallery background */
+.modalVisual::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background-image: radial-gradient(var(--border) 1px, transparent 1px);
+  background-size: 24px 24px;
+  opacity: 0.5;
+  pointer-events: none;
+}
+
+/* ---- Gallery Stack Animations ---- */
+.galleryStackContainer {
+  position: relative;
+  width: 100%;
+  aspect-ratio: 16 / 9;
+  cursor: pointer;
+  z-index: 5;
+  perspective: 800px;
+}
+
+/* Portrait-optimized gallery: taller container */
+.galleryStackContainer.portraitGallery {
+  aspect-ratio: 3 / 4;
+}
+
+/* Base layer style */
+.galleryLayer {
+  position: absolute;
+  inset: 0;
+  border-radius: 16px;
+  overflow: hidden;
+  background-color: var(--bg-card);
+  box-shadow: 0 8px 32px rgba(0, 0, 0, 0.15);
+  transition: transform 0.6s cubic-bezier(0.34, 1.56, 0.64, 1),
+    opacity 0.6s ease,
+    box-shadow 0.6s ease;
+  will-change: transform, opacity;
+}
+
+/* Blurred ambient backdrop behind contained images */
+.galleryLayerBackdrop {
+  position: absolute;
+  inset: 0;
+  border-radius: 16px;
+  background-size: cover;
+  background-position: center;
+  background-repeat: no-repeat;
+  filter: blur(28px) saturate(1.4);
+  opacity: 0.35;
+  pointer-events: none;
+  z-index: 0;
+}
+
+/* Layer 0 = front card (default position) */
+.galleryLayer0 {
+  transform: translate3d(0, 0, 0) scale(1) rotate(0deg);
+  opacity: 1;
+}
+
+/* Layer 1 = second card (hidden behind) */
+.galleryLayer1 {
+  transform: translate3d(0, 6px, -20px) scale(0.96);
+  opacity: 0;
+}
+
+/* Layer 2 = third card (hidden deeper behind) */
+.galleryLayer2 {
+  transform: translate3d(0, 12px, -40px) scale(0.92);
+  opacity: 0;
+}
+
+/* ---- Hover: fan out the cards behind ---- */
+.galleryHovered .galleryLayer0 {
+  transform: translate3d(-6px, -4px, 10px) scale(1.02) rotate(-1.5deg);
+  box-shadow: 0 20px 50px rgba(0, 0, 0, 0.25);
+}
+
+.galleryHovered .galleryLayer1 {
+  transform: translate3d(12px, 10px, -20px) scale(0.95) rotate(2.5deg);
+  opacity: 0.65;
+  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.12);
+}
+
+.galleryHovered .galleryLayer2 {
+  transform: translate3d(24px, 20px, -40px) scale(0.90) rotate(5deg);
+  opacity: 0.35;
+  box-shadow: 0 6px 20px rgba(0, 0, 0, 0.08);
+}
+
+/* Hidden layers deep in stack */
+.galleryLayerHidden {
+  transform: translate3d(0, 18px, -60px) scale(0.88);
+  opacity: 0;
+  pointer-events: none;
+}
+
+/* The card that just moved to the back */
+.galleryLayerLast {
+  /* We use an animation to swing it out to the side then tuck it in back */
+  animation: swingOutAndBack 0.65s cubic-bezier(0.34, 1.56, 0.64, 1) forwards;
+  pointer-events: none;
+}
+
+@keyframes swingOutAndBack {
+  0% {
+    transform: translate3d(0, 0, 0) scale(1) rotate(0deg);
+    opacity: 1;
+  }
+
+  40% {
+    transform: translate3d(60px, -15px, 20px) scale(0.95) rotate(8deg);
+    opacity: 0.8;
+  }
+
+  100% {
+    /* Final position matching galleryLayer2 or hidden state */
+    transform: translate3d(0, 18px, -60px) scale(0.88) rotate(0deg);
+    opacity: 0;
+  }
+}
+
+/* ---- Counter badge ---- */
+.galleryCounter {
+  position: absolute;
+  top: 12px;
+  right: 12px;
+  background: rgba(0, 0, 0, 0.55);
+  color: white;
+  padding: 5px 12px;
+  border-radius: 20px;
+  font-family: var(--font-mono);
+  font-size: 0.75rem;
+  z-index: 30;
+  backdrop-filter: blur(8px);
+  opacity: 0;
+  transition: opacity 0.3s ease;
+  letter-spacing: 0.05em;
+}
+
+.galleryHovered .galleryCounter {
+  opacity: 1;
+}
+
+/* ---- Hint text ---- */
+.galleryHint {
+  position: absolute;
+  bottom: 12px;
+  left: 50%;
+  transform: translate(-50%, 8px);
+  background: rgba(0, 0, 0, 0.55);
+  color: white;
+  padding: 5px 14px;
+  border-radius: 20px;
+  font-size: 0.75rem;
+  opacity: 0;
+  transition: all 0.35s cubic-bezier(0.22, 1, 0.36, 1);
+  pointer-events: none;
+  backdrop-filter: blur(8px);
+  white-space: nowrap;
+  z-index: 30;
+}
+
+.galleryHovered .galleryHint {
+  opacity: 1;
+  transform: translate(-50%, 0);
+}
+
+.modalNumber {
+  font-family: var(--font-heading);
+  font-size: 8rem;
+  font-weight: var(--fw-black);
+  color: var(--text-muted);
+  opacity: 0.2;
+}
+
+.modalBody {
+  width: 52%;
+  height: 100%;
+  min-height: 0;
+  padding: 4rem 4rem 4rem 3rem;
+  overflow-y: auto;
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-start;
+  overscroll-behavior: contain;
+  scrollbar-width: thin;
+  scrollbar-color: var(--border) transparent;
+}
+
+/* When visual is portrait, body gets more space */
+.modalBody.portraitBody {
+  width: 58%;
+}
+
+.modalMeta {
+  display: flex;
+  gap: var(--space-md);
+  margin-bottom: var(--space-lg);
+}
+
+.modalMetaItem {
+  font-family: var(--font-mono);
+  font-size: 0.85rem;
+  color: var(--text-primary);
+  text-transform: uppercase;
+  letter-spacing: 0.15em;
+  background: transparent;
+  padding: 0;
+  font-weight: var(--fw-bold);
+  border-bottom: 2px solid var(--accent);
+}
+
+.modalTitle {
+  font-size: 2.8rem;
+  /* Reduced from massive typography */
+  font-weight: var(--fw-black);
+  color: var(--text-primary);
+  line-height: 1.1;
+  margin-bottom: 1.25rem;
+  letter-spacing: -0.02em;
+}
+
+.modalDescription {
+  font-size: 1.05rem;
+  color: var(--text-secondary);
+  line-height: 1.7;
+  margin-bottom: 2.5rem;
+  max-width: 95%;
+  white-space: pre-line;
+}
+
+.modalTechSection {
+  margin-bottom: var(--space-2xl);
+}
+
+.modalSectionLabel {
+  font-size: 0.8rem;
+  font-weight: var(--fw-bold);
+  color: var(--text-tertiary);
+  text-transform: uppercase;
+  letter-spacing: 0.2em;
+  margin-bottom: 1rem;
+}
+
+.modalTech {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.5rem;
+}
+
+.modalTechTag {
+  font-family: var(--font-mono);
+  font-size: 0.8rem;
+  color: var(--text-primary);
+  background: transparent;
+  border: 1px solid var(--border);
+  padding: 0.3rem 1.2rem;
+  border-radius: 8px;
+  /* Sharp corners for modern feel */
+  transition: all 0.3s ease;
+}
+
+.modalTechTag:hover {
+  background: var(--text-primary);
+  color: var(--bg-primary);
+}
+
+.modalLinks {
+  display: flex;
+  gap: 1.5rem;
+  margin-top: 3rem;
+  padding-top: 2rem;
+  border-top: 1px solid var(--border);
+}
+
+.modalLinkPrimary,
+.modalLinkSecondary {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.75rem;
+  padding: 0.6rem 2rem;
+  border-radius: 5px;
+  font-weight: var(--fw-bold);
+  font-size: 1rem;
+  transition: all 0.3s cubic-bezier(0.16, 1, 0.3, 1);
+  text-decoration: none;
+  font-family: inherit;
+  cursor: pointer;
+  outline: none;
+  border: none;
+}
+
+.modalLinkPrimary {
+  background: var(--text-primary);
+  color: var(--bg-primary);
+}
+
+.modalLinkPrimary:hover {
+  transform: translateY(-4px);
+  box-shadow: 0 12px 30px rgba(0, 0, 0, 0.3);
+}
+
+.modalLinkSecondary {
+  background: transparent;
+  color: var(--text-primary);
+  border: 2px solid var(--text-primary);
+}
+
+.modalLinkSecondary:hover {
+  background: var(--text-primary);
+  color: var(--bg-primary);
+  transform: translateY(-4px);
+  box-shadow: 0 12px 30px rgba(0, 0, 0, 0.2);
+}
+
+.modalLinkDisabled {
+  opacity: 0.75;
+}
+
+.modalLinkDisabled:hover {
+  transform: translateY(-2px);
+  opacity: 1;
+}
+
+/* ---- Toast Notification inside Modal ---- */
+.modalToast {
+  position: absolute;
+  bottom: 2rem;
+  left: 50%;
+  transform: translateX(-50%);
+  background: var(--bg-card);
+  color: var(--text-primary);
+  border: 1px solid var(--border);
+  box-shadow: 0 16px 40px rgba(0, 0, 0, 0.35);
+  backdrop-filter: blur(16px);
+  -webkit-backdrop-filter: blur(16px);
+  padding: 0.85rem 1.4rem;
+  border-radius: 12px;
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+  font-size: 0.9rem;
+  font-weight: var(--fw-medium);
+  z-index: 200;
+  animation: toastSlideUp 0.35s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+  max-width: 90%;
+  white-space: nowrap;
+  pointer-events: auto;
+}
+
+@keyframes toastSlideUp {
+  from {
+    opacity: 0;
+    transform: translate(-50%, 16px) scale(0.95);
+  }
+  to {
+    opacity: 1;
+    transform: translate(-50%, 0) scale(1);
+  }
+}
+
+.modalToastIcon {
+  color: var(--accent);
+  display: flex;
+  align-items: center;
+  flex-shrink: 0;
+}
+
+.modalToastText {
+  color: var(--text-primary);
+  line-height: 1.4;
+}
+
+.modalToastClose {
+  background: transparent;
+  border: none;
+  color: var(--text-tertiary);
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 4px;
+  margin-left: 0.5rem;
+  border-radius: 4px;
+  transition: all 0.2s ease;
+}
+
+.modalToastClose:hover {
+  color: var(--text-primary);
+  background: rgba(255, 255, 255, 0.1);
+}
+
+/* ---- Responsive ---- */
+@media (max-width: 900px) {
+  .projectGrid {
+    grid-template-columns: 1fr;
+    gap: 1.5rem;
+    margin-bottom: 2.5rem;
+  }
+
+  .cardBody {
+    padding: 1.5rem 1.25rem 1.6rem;
+  }
+
+  .cardTitle {
+    font-size: 1.25rem;
+  }
+
+  .cardDescription {
+    font-size: 0.9rem;
+    -webkit-line-clamp: 3;
+  }
+
+  .modal {
+    flex-direction: column;
+    overflow-y: auto;
+    height: auto;
+    max-height: 95vh;
+  }
+
+  .modalVisual {
+    width: 100%;
+    height: 400px;
+    padding: 2.5rem;
+    flex-shrink: 0;
+  }
+
+  .modalVisual.portraitVisual {
+    width: 100%;
+    height: 500px;
+    padding: 2rem;
+  }
+
+  .modalBody {
+    width: 100%;
+    height: auto;
+    padding: 2.5rem;
+    justify-content: flex-start;
+  }
+}
+
+@media (max-width: 640px) {
+  .projects {
+    padding: 3.5rem 0;
+  }
+
+  .glassParticles {
+    display: none;
+  }
+
+  .projectsHeader {
+    margin-bottom: 2rem;
+  }
+
+  .projectsHeading {
+    font-size: clamp(1.85rem, 7vw, 2.4rem);
+    letter-spacing: -0.02em;
+  }
+
+  .projectsSubtext {
+    font-size: 0.95rem;
+  }
+
+  .projectGrid {
+    grid-template-columns: 1fr;
+    gap: 1.25rem;
+    margin-bottom: 2rem;
+  }
+
+  .projectCard {
+    border-radius: var(--radius-xl);
+  }
+
+  .cardImageWrapper {
+    padding: 0.6rem 0.6rem 0 0.6rem;
+  }
+
+  .cardBody {
+    padding: 1.25rem 1.15rem 1.4rem;
+  }
+
+  .cardTitle {
+    font-size: 1.15rem;
+    line-height: 1.35;
+    margin-bottom: 0.4rem;
+  }
+
+  .cardDescription {
+    font-size: 0.86rem;
+    line-height: 1.55;
+    margin-bottom: 0.85rem;
+    -webkit-line-clamp: 3;
+  }
+
+  .cardTech {
+    gap: 0.35rem;
+  }
+
+  .techTag {
+    font-size: 0.72rem;
+    padding: 0.2rem 0.55rem;
+  }
+
+  .viewAllWrapper {
+    margin-top: 1rem;
+  }
+
+  .viewAllBtn {
+    width: 100%;
+    justify-content: center;
+    padding: 0.9rem 1.5rem;
+    font-size: 0.95rem;
+  }
+
+  .modalOverlay {
+    padding: 0.75rem;
+  }
+
+  .modal {
+    max-height: 92vh;
+    border-radius: var(--radius-xl);
+  }
+
+  .modalVisual {
+    height: 250px;
+    padding: 1.5rem 1rem;
+  }
+
+  .modalVisual.portraitVisual {
+    height: 340px;
+    padding: 1.5rem 1rem;
+  }
+
+  .modalBody {
+    padding: 1.5rem 1.25rem 2rem;
+  }
+
+  .modalMeta {
+    gap: var(--space-sm);
+    margin-bottom: var(--space-md);
+  }
+
+  .modalMetaItem {
+    font-size: 0.75rem;
+  }
+
+  .modalTitle {
+    font-size: clamp(1.75rem, 6.5vw, 2.2rem);
+    margin-bottom: 1rem;
+  }
+
+  .modalDescription {
+    font-size: 0.95rem;
+    line-height: 1.6;
+    margin-bottom: 1.75rem;
+    max-width: 100%;
+  }
+
+  .modalTechSection {
+    margin-bottom: 1.75rem;
+  }
+
+  .modalClose {
+    top: 0.75rem;
+    right: 0.75rem;
+    width: 38px;
+    height: 38px;
+  }
+
+  .modalLinks {
+    flex-direction: column;
+    gap: 0.85rem;
+    margin-top: 2rem;
+    padding-top: 1.5rem;
+  }
+
+  .modalLinkPrimary,
+  .modalLinkSecondary {
+    width: 100%;
+    justify-content: center;
+    padding: 0.85rem 1.5rem;
+    font-size: 0.95rem;
+  }
+
+  .modalToast {
+    width: calc(100% - 2.5rem);
+    bottom: 1.25rem;
+    white-space: normal;
+    font-size: 0.84rem;
+    padding: 0.75rem 1rem;
+    text-align: left;
+  }
+}

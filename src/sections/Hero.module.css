@@ -1,0 +1,303 @@
+.hero {
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  position: relative;
+  padding: calc(var(--navbar-height) + 1rem) 0 var(--space-3xl);
+  background: transparent;
+}
+
+.heroInner {
+  display: flex;
+  flex-direction: column;
+  width: 100%;
+}
+
+/* ---- Profile Row: Photo left + Name/Socials right, vertically centered ---- */
+.profileRow {
+  display: flex;
+  align-items: center;
+  gap: var(--space-2xl);
+}
+
+.heroImage {
+  flex-shrink: 0;
+  perspective: 1000px;
+}
+
+.imageWrapper {
+  --rotate-x: 0deg;
+  --rotate-y: 0deg;
+  --parallax-x: 0px;
+  --parallax-y: 0px;
+  --spotlight-x: 50%;
+  --spotlight-y: 50%;
+  width: 240px;
+  height: 240px;
+  border-radius: 50%;
+  overflow: hidden;
+  background: var(--bg-tertiary);
+  border: 1px solid var(--border-light);
+  box-shadow: 0 4px 24px rgba(0, 0, 0, 0.08);
+  position: relative;
+  transform-style: preserve-3d;
+  transform: perspective(1000px) rotateX(var(--rotate-x)) rotateY(var(--rotate-y));
+  transition: transform 0.15s cubic-bezier(0.16, 1, 0.3, 1),
+    box-shadow 0.4s ease,
+    border-color 0.4s ease;
+}
+
+.imageWrapper:hover {
+  border-color: var(--border-hover);
+  box-shadow: 0 20px 40px -10px rgba(0, 0, 0, 0.2), var(--shadow-glow);
+}
+
+.clickableWrapper {
+  cursor: pointer;
+}
+
+.flipping {
+  transform: perspective(1000px) scale(0.94) rotateY(90deg) !important;
+  filter: blur(4px);
+  transition: transform 0.25s ease, filter 0.25s ease;
+}
+
+.profileMedia,
+.profileImg {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  object-position: center top;
+  display: block;
+  transform: scale(1.16) translate3d(var(--parallax-x), var(--parallax-y), 20px);
+  transition: transform 0.15s cubic-bezier(0.16, 1, 0.3, 1);
+  will-change: transform;
+}
+
+/* Specular glass reflection overlay */
+.avatarSpotlight {
+  position: absolute;
+  inset: 0;
+  border-radius: 50%;
+  pointer-events: none;
+  z-index: 5;
+  background: radial-gradient(circle at var(--spotlight-x) var(--spotlight-y), rgba(255, 255, 255, 0.22) 0%, transparent 65%);
+  opacity: 0;
+  transition: opacity 0.3s ease;
+}
+
+.imageWrapper:hover .avatarSpotlight {
+  opacity: 1;
+}
+
+.avatarPlaceholder {
+  width: 100%;
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  background: var(--bg-card);
+  color: var(--text-tertiary);
+  transition: all 0.3s ease;
+}
+
+.avatarInitials {
+  font-family: var(--font-heading);
+  font-size: 3.5rem;
+  font-weight: var(--fw-bold);
+  letter-spacing: -0.03em;
+  color: var(--text-primary);
+  opacity: 0.85;
+}
+
+.avatarIcon {
+  color: var(--text-tertiary);
+  opacity: 0.6;
+}
+
+.profileInfo {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-lg);
+
+}
+
+.nameRow {
+  display: flex;
+  align-items: center;
+  gap: var(--space-sm);
+}
+
+.name {
+  font-size: var(--fs-h2);
+  font-weight: var(--fw-bold);
+  line-height: 1.1;
+  letter-spacing: var(--ls-tight);
+  color: var(--text-primary);
+}
+
+.verified {
+  display: inline-flex;
+  align-items: center;
+  flex-shrink: 0;
+  font-size: var(--fs-h2);
+
+  svg {
+    width: 0.7em;
+    height: 0.7em;
+    margin-top: 0.2em;
+    color: var(--accent);
+  }
+}
+
+.socialLinks {
+  display: flex;
+  align-items: center;
+  gap: var(--space-sm);
+}
+
+.socialLink {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 36px;
+  height: 36px;
+  border-radius: 50%;
+  border: 1px solid var(--border);
+  color: var(--text-secondary);
+  background: var(--bg-secondary);
+  transition: all 0.3s ease;
+}
+
+.socialLink:hover {
+  color: var(--text-primary);
+  border-color: var(--text-primary);
+  background: var(--bg-primary);
+  transform: translateY(-2px);
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08);
+}
+
+/* ---- Role: full-width below profile row ---- */
+.role {
+  font-family: 'Outfit', var(--font-heading);
+  font-size: var(--fs-h2);
+  font-weight: var(--fw-semibold);
+  color: var(--text-primary);
+  letter-spacing: var(--ls-tight);
+  line-height: 1.2;
+  margin-top: 40px;
+  padding-bottom: var(--space-lg);
+  border-bottom: 1px solid var(--border-light);
+}
+
+.roleSub {
+  color: var(--text-tertiary);
+  font-weight: var(--fw-regular);
+}
+
+/* ---- Bio & CTA ---- */
+.profileBioWrapper {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-2xl);
+  padding-top: var(--space-lg);
+}
+
+.bio {
+  font-size: var(--fs-body);
+  color: var(--text-secondary);
+  line-height: var(--lh-relaxed);
+  max-width: 100%;
+  line-height: 35px;
+}
+
+.cta {
+  display: flex;
+  gap: var(--space-md);
+  margin-top: var(--space-sm);
+}
+
+.ctaPrimary,
+.ctaSecondary {
+  font-family: var(--font-body);
+  font-size: var(--fs-small);
+  font-weight: var(--fw-semibold);
+  letter-spacing: var(--ls-normal);
+  padding: 1rem 1.8rem;
+  border-radius: 10px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  transition: all 0.3s ease;
+}
+
+.ctaPrimary {
+  color: var(--text-white);
+  background: var(--text-primary);
+}
+
+.ctaPrimary:hover {
+  background: var(--accent-hover);
+}
+
+.ctaSecondary {
+  color: var(--text-primary);
+  background: var(--bg-secondary);
+  border: 1px solid var(--border);
+}
+
+.ctaSecondary:hover {
+  background: var(--border-light);
+}
+
+/* ---- Responsive ---- */
+@media (max-width: 700px) {
+  .hero {
+    padding-top: calc(var(--navbar-height) + 2rem);
+  }
+
+  .profileRow {
+    flex-direction: column;
+    text-align: center;
+    gap: var(--space-xl);
+  }
+
+  .profileInfo {
+    align-items: center;
+  }
+
+  .nameRow {
+    justify-content: center;
+  }
+
+  .socialLinks {
+    justify-content: center;
+  }
+
+  .role {
+    text-align: center;
+    font-size: var(--fs-h3);
+  }
+
+  .profileBioWrapper {
+    text-align: center;
+  }
+
+  .cta {
+    flex-direction: column;
+    width: 100%;
+  }
+
+  .ctaPrimary,
+  .ctaSecondary {
+    width: 100%;
+  }
+
+  .imageWrapper {
+    width: 200px;
+    height: 200px;
+  }
+}

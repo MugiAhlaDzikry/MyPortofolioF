@@ -1,0 +1,77 @@
+.cursorDot {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 6px;
+  height: 6px;
+  background: var(--text-primary);
+  border-radius: 50%;
+  pointer-events: none;
+  z-index: var(--z-cursor);
+  transform: translate(-50%, -50%);
+  mix-blend-mode: difference;
+  transition: width 0.3s var(--ease-out-expo),
+              height 0.3s var(--ease-out-expo),
+              opacity 0.3s ease;
+}
+
+.cursorRing {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 40px;
+  height: 40px;
+  border: 1px solid rgba(255, 255, 255, 0.4);
+  border-radius: 50%;
+  pointer-events: none;
+  z-index: var(--z-cursor);
+  transform: translate(-50%, -50%);
+  mix-blend-mode: difference;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: width 0.4s var(--ease-out-expo),
+              height 0.4s var(--ease-out-expo),
+              border-color 0.3s ease,
+              opacity 0.3s ease,
+              background 0.3s ease;
+}
+
+/* Hover state */
+.cursorDot.hovering {
+  width: 0;
+  height: 0;
+  opacity: 0;
+}
+
+.cursorRing.hovering {
+  width: 80px;
+  height: 80px;
+  border-color: rgba(255, 255, 255, 0.6);
+  background: rgba(255, 255, 255, 0.05);
+}
+
+/* Hidden state (out of window) */
+.cursorDot.hidden,
+.cursorRing.hidden {
+  opacity: 0;
+}
+
+/* Cursor text */
+.cursorText {
+  font-family: var(--font-mono);
+  font-size: 0.625rem;
+  letter-spacing: 0.05em;
+  text-transform: uppercase;
+  white-space: nowrap;
+  color: var(--text-primary);
+  opacity: 0.9;
+}
+
+/* Hide on mobile */
+@media (max-width: 768px) {
+  .cursorDot,
+  .cursorRing {
+    display: none;
+  }
+}
