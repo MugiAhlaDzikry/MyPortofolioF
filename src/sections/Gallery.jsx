@@ -1,13 +1,9 @@
-import { useState, useEffect, useLayoutEffect, useRef, useCallback } from 'react';
+import { useState, useEffect } from 'react';
 import { Maximize2, ChevronLeft, ChevronRight, X } from 'lucide-react';
-import { gsap } from 'gsap';
-import { ScrollTrigger } from 'gsap/ScrollTrigger';
 import ScrollReveal from '../components/Animations/ScrollReveal';
 import { supabase } from '../lib/supabaseClient';
 import { getLenis } from '../hooks/useLenis';
 import styles from './Gallery.module.css';
-
-gsap.registerPlugin(ScrollTrigger);
 
 export const DEFAULT_ACTIVITIES = [
   {
@@ -47,14 +43,7 @@ export const DEFAULT_ACTIVITIES = [
 export default function Gallery() {
   const [items, setItems] = useState(DEFAULT_ACTIVITIES);
   const [selectedIdx, setSelectedIdx] = useState(null);
-  const sectionRef = useRef(null);
-  const frameRefs = useRef([]);
 
-  const addFrameRef = useCallback((el, idx) => {
-    if (el) frameRefs.current[idx] = el;
-  }, []);
-
-  // Fetch from Supabase / localStorage
   useEffect(() => {
     const fetchActivities = async () => {
       try {
@@ -127,53 +116,6 @@ export default function Gallery() {
     }
   }, [selectedIdx, items.length]);
 
-  // GSAP scroll-triggered entrance animation
-  useLayoutEffect(() => {
-    if (!sectionRef.current) return;
-
-    const validFrames = frameRefs.current.filter(Boolean);
-    if (validFrames.length === 0) return;
-
-    // Set initial state immediately
-    gsap.set(validFrames, {
-      opacity: 0,
-      y: 80,
-      scale: 0.92
-    });
-
-    // Column-aware stagger: frames in cols get cascading delays
-    // Frame order: [col0-row0, col0-row1, col1-row0, col1-row1, ...]
-    // We want col-based waterfall, so stagger delay per frame varies
-    const tl = gsap.timeline({
-      scrollTrigger: {
-        trigger: sectionRef.current,
-        start: 'top 80%',
-        toggleActions: 'play none none none'
-      }
-    });
-
-    validFrames.forEach((frame, i) => {
-      const colIdx = Math.floor(i / 2);
-      const rowIdx = i % 2;
-      const frameDelay = colIdx * 0.12 + rowIdx * 0.18;
-
-      tl.to(frame, {
-        opacity: 1,
-        y: 0,
-        scale: 1,
-        duration: 1.0,
-        ease: 'power3.out'
-      }, frameDelay);
-    });
-
-    return () => {
-      tl.kill();
-      ScrollTrigger.getAll().forEach(st => {
-        if (st.trigger === sectionRef.current) st.kill();
-      });
-    };
-  }, [items]);
-
   // Build 4 columns for "The Balanced" pattern
   const columns = [
     [items[0] || DEFAULT_ACTIVITIES[0], items[1] || DEFAULT_ACTIVITIES[1]],
@@ -185,7 +127,7 @@ export default function Gallery() {
   const activeItem = selectedIdx !== null ? items[selectedIdx] : null;
 
   return (
-    <section className={`section ${styles.gallerySection}`} id="gallery" ref={sectionRef}>
+    <section className={`section ${styles.gallerySection}`} id="gallery">
       <div className="container">
         {/* Header */}
         <div className={styles.sectionHeader}>
@@ -213,33 +155,42 @@ export default function Gallery() {
                 const isPortrait = (colIdx % 2 === 0 && rowIdx === 1) || (colIdx % 2 === 1 && rowIdx === 0);
                 const formatClass = isPortrait ? styles.formatPortrait : styles.formatLandscape;
 
+                // Column-aware cascade delay
+                const animDelay = colIdx * 0.1 + rowIdx * 0.15;
+
                 return (
-                  <div
+                  <ScrollReveal
                     key={item.id || globalIdx}
-                    ref={(el) => addFrameRef(el, globalIdx)}
-                    className={`${styles.frameItem} ${formatClass}`}
-                    onClick={() => setSelectedIdx(globalIdx)}
-                    role="button"
-                    tabIndex={0}
-                    aria-label={`View photo ${globalIdx + 1}`}
-                    onKeyDown={(e) => {
-                      if (e.key === 'Enter' || e.key === ' ') {
-                        e.preventDefault();
-                        setSelectedIdx(globalIdx);
-                      }
-                    }}
+                    delay={animDelay}
+                    direction="up"
+                    distance={50}
+                    duration={0.9}
                   >
-                    <img
-                      src={item.image_url}
-                      alt={`Activity photo ${globalIdx + 1}`}
-                      className={styles.photoImage}
-                      loading="lazy"
-                    />
-                    <div className={styles.photoOverlay} aria-hidden="true" />
-                    <div className={styles.expandHint} aria-hidden="true">
-                      <Maximize2 size={18} />
+                    <div
+                      className={`${styles.frameItem} ${formatClass}`}
+                      onClick={() => setSelectedIdx(globalIdx)}
+                      role="button"
+                      tabIndex={0}
+                      aria-label={`View photo ${globalIdx + 1}`}
+                      onKeyDown={(e) => {
+                        if (e.key === 'Enter' || e.key === ' ') {
+                          e.preventDefault();
+                          setSelectedIdx(globalIdx);
+                        }
+                      }}
+                    >
+                      <img
+                        src={item.image_url}
+                        alt={`Activity photo ${globalIdx + 1}`}
+                        className={styles.photoImage}
+                        loading="lazy"
+                      />
+                      <div className={styles.photoOverlay} aria-hidden="true" />
+                      <div className={styles.expandHint} aria-hidden="true">
+                        <Maximize2 size={18} />
+                      </div>
                     </div>
-                  </div>
+                  </ScrollReveal>
                 );
               })}
             </div>
