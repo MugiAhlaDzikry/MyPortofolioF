@@ -8,6 +8,7 @@ import Projects from '../sections/Projects';
 import GithubActivity from '../sections/GithubActivity';
 import Experience from '../sections/Experience';
 import Awards from '../sections/Awards';
+import Gallery from '../sections/Gallery';
 import Education from '../sections/Education';
 import Contact from '../sections/Contact';
 
@@ -26,6 +27,7 @@ export default function Portfolio() {
         <GithubActivity />
         <Experience />
         <Awards />
+        <Gallery />
         <Education />
         <Contact />
       </main>

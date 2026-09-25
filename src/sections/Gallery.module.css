@@ -1,0 +1,601 @@
+/* ==========================================
+   THE BALANCED ACTIVITY GALLERY — STYLES
+   Museum-grade Exhibition Aesthetic with 4-Column Balanced Grid
+   ========================================== */
+
+.gallerySection {
+  position: relative;
+  background: var(--bg-primary);
+  padding: var(--space-section) 0;
+  overflow: hidden;
+  transition: background-color var(--duration-normal) var(--ease-smooth);
+}
+
+/* Ambient background radial glow */
+.ambientGlow {
+  position: absolute;
+  top: 30%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  width: 700px;
+  height: 450px;
+  background: radial-gradient(circle, rgba(16, 185, 129, 0.05) 0%, rgba(99, 102, 241, 0.03) 50%, transparent 70%);
+  filter: blur(80px);
+  pointer-events: none;
+  z-index: 0;
+}
+
+[data-theme="dark"] .ambientGlow {
+  background: radial-gradient(circle, rgba(16, 185, 129, 0.08) 0%, rgba(99, 102, 241, 0.05) 50%, transparent 70%);
+}
+
+/* Header */
+.sectionHeader {
+  margin-bottom: clamp(2.5rem, 5vw, 4rem);
+  text-align: center;
+  max-width: 720px;
+  margin-left: auto;
+  margin-right: auto;
+  position: relative;
+  z-index: 1;
+}
+
+.heading {
+  font-size: var(--fs-h2);
+  font-weight: var(--fw-bold);
+  color: var(--text-primary);
+  letter-spacing: var(--ls-tight);
+  line-height: var(--lh-tight);
+  margin-top: var(--space-xs);
+  margin-bottom: var(--space-md);
+}
+
+.subtext {
+  font-size: var(--fs-body);
+  color: var(--text-secondary);
+  line-height: var(--lh-relaxed);
+}
+
+/* Layout Badge Indicator */
+.layoutBadgeRow {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: 0.75rem;
+  margin-top: 1.25rem;
+}
+
+.layoutBadge {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.5rem;
+  padding: 0.35rem 0.9rem;
+  background: var(--bg-badge);
+  border: 1px solid var(--border-tag);
+  border-radius: var(--radius-full);
+  font-size: var(--fs-xs);
+  font-family: var(--font-mono);
+  color: var(--text-tertiary);
+  letter-spacing: 0.05em;
+  text-transform: uppercase;
+}
+
+.layoutDot {
+  width: 6px;
+  height: 6px;
+  border-radius: 50%;
+  background: #10B981;
+  box-shadow: 0 0 8px #10B981;
+}
+
+/* ==========================================
+   THE BALANCED GALLERY GRID
+   4 Columns x 2 Rows with alternating 10x12 and 12x16 aspect ratios
+   ========================================== */
+
+.galleryWall {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 1.5rem;
+  position: relative;
+  z-index: 1;
+  width: 100%;
+}
+
+.galleryCol {
+  display: flex;
+  flex-direction: column;
+  gap: 1.5rem;
+  width: 100%;
+}
+
+/* ==========================================
+   PICTURE FRAME CONTAINER
+   Museum Passe-partout & Outer Moulding
+   ========================================== */
+
+.frameItem {
+  position: relative;
+  width: 100%;
+  background: var(--bg-card);
+  border: 1px solid var(--border);
+  border-radius: var(--radius-lg);
+  padding: 0.85rem;
+  box-shadow: var(--shadow-md);
+  cursor: pointer;
+  overflow: hidden;
+  transition: transform 0.6s cubic-bezier(0.16, 1, 0.3, 1),
+              box-shadow 0.6s cubic-bezier(0.16, 1, 0.3, 1),
+              border-color 0.4s ease;
+  display: flex;
+  flex-direction: column;
+}
+
+/* Aspect Ratios strictly matching "The Balanced" specifications */
+.formatLandscape {
+  aspect-ratio: 12 / 10; /* 10x12" Landscape */
+}
+
+.formatPortrait {
+  aspect-ratio: 12 / 16; /* 12x16" Portrait */
+}
+
+/* Hover state - Super Smooth Lift & Ambient Glow */
+.frameItem:hover {
+  transform: translateY(-8px) scale(1.015);
+  box-shadow: 0 24px 48px -12px rgba(0, 0, 0, 0.2), 0 0 20px rgba(16, 185, 129, 0.12);
+  border-color: rgba(16, 185, 129, 0.35);
+}
+
+[data-theme="dark"] .frameItem {
+  background: rgba(18, 18, 24, 0.85);
+  border: 1px solid rgba(255, 255, 255, 0.08);
+  box-shadow: 0 8px 30px rgba(0, 0, 0, 0.5);
+}
+
+[data-theme="dark"] .frameItem:hover {
+  border-color: rgba(16, 185, 129, 0.5);
+  box-shadow: 0 28px 60px -12px rgba(0, 0, 0, 0.7), 0 0 30px rgba(16, 185, 129, 0.18);
+}
+
+/* Passe-partout (Mat board) inner container */
+.matBoard {
+  position: relative;
+  width: 100%;
+  height: 100%;
+  border-radius: calc(var(--radius-lg) - 4px);
+  overflow: hidden;
+  background: #000;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+/* The actual photograph */
+.photoImage {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  display: block;
+  transition: transform 0.8s cubic-bezier(0.16, 1, 0.3, 1), filter 0.5s ease;
+}
+
+.frameItem:hover .photoImage {
+  transform: scale(1.08);
+}
+
+/* Glass Sheen Light Sweep Effect */
+.glassSheen {
+  position: absolute;
+  top: 0;
+  left: -150%;
+  width: 100%;
+  height: 100%;
+  background: linear-gradient(
+    115deg,
+    transparent 0%,
+    rgba(255, 255, 255, 0.08) 45%,
+    rgba(255, 255, 255, 0.22) 50%,
+    rgba(255, 255, 255, 0.08) 55%,
+    transparent 100%
+  );
+  pointer-events: none;
+  transition: transform 0.9s cubic-bezier(0.16, 1, 0.3, 1);
+  z-index: 2;
+}
+
+.frameItem:hover .glassSheen {
+  transform: translateX(250%);
+}
+
+/* Photo Gradient Vignette / Overlay */
+.photoOverlay {
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(
+    180deg,
+    rgba(0, 0, 0, 0.1) 0%,
+    rgba(0, 0, 0, 0.2) 40%,
+    rgba(0, 0, 0, 0.85) 100%
+  );
+  opacity: 0.85;
+  transition: opacity 0.4s ease;
+  z-index: 1;
+}
+
+.frameItem:hover .photoOverlay {
+  opacity: 0.95;
+}
+
+/* Floating Card Content on Hover / Visible */
+.cardContent {
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  padding: 1.15rem;
+  z-index: 3;
+  display: flex;
+  flex-direction: column;
+  gap: 0.4rem;
+  transform: translateY(6px);
+  transition: transform 0.5s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+.frameItem:hover .cardContent {
+  transform: translateY(0);
+}
+
+.badgeRow {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.categoryPill {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.35rem;
+  padding: 0.2rem 0.6rem;
+  background: rgba(16, 185, 129, 0.2);
+  border: 1px solid rgba(16, 185, 129, 0.4);
+  border-radius: var(--radius-full);
+  font-size: 0.7rem;
+  font-weight: var(--fw-semibold);
+  font-family: var(--font-mono);
+  color: #34D399;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+  backdrop-filter: blur(8px);
+}
+
+.formatTag {
+  font-size: 0.65rem;
+  font-family: var(--font-mono);
+  color: rgba(255, 255, 255, 0.6);
+  background: rgba(0, 0, 0, 0.4);
+  padding: 0.15rem 0.45rem;
+  border-radius: 4px;
+  backdrop-filter: blur(6px);
+}
+
+.cardTitle {
+  font-size: clamp(0.9rem, 1.1vw, 1.05rem);
+  font-weight: var(--fw-semibold);
+  color: #FFFFFF;
+  line-height: 1.25;
+  margin: 0;
+  display: -webkit-box;
+  -webkit-line-clamp: 2;
+  line-clamp: 2;
+  -webkit-box-orient: vertical;
+  overflow: hidden;
+  text-shadow: 0 1px 3px rgba(0, 0, 0, 0.8);
+}
+
+.cardMeta {
+  display: flex;
+  align-items: center;
+  gap: 0.6rem;
+  font-size: 0.75rem;
+  color: rgba(255, 255, 255, 0.75);
+  font-weight: var(--fw-regular);
+}
+
+.cardMetaItem {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.3rem;
+}
+
+/* Expand hint icon */
+.expandHint {
+  position: absolute;
+  top: 1rem;
+  right: 1rem;
+  width: 34px;
+  height: 34px;
+  border-radius: 50%;
+  background: rgba(0, 0, 0, 0.45);
+  border: 1px solid rgba(255, 255, 255, 0.2);
+  backdrop-filter: blur(8px);
+  color: #FFFFFF;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  opacity: 0;
+  transform: scale(0.8);
+  transition: opacity 0.4s ease, transform 0.4s cubic-bezier(0.16, 1, 0.3, 1), background-color 0.2s ease;
+  z-index: 3;
+}
+
+.frameItem:hover .expandHint {
+  opacity: 1;
+  transform: scale(1);
+}
+
+.expandHint:hover {
+  background: #10B981;
+  border-color: #10B981;
+  color: #000;
+}
+
+/* ==========================================
+   FULLSCREEN INTERACTIVE LIGHTBOX
+   Smooth blur backdrop & fluid presentation
+   ========================================== */
+
+.lightboxOverlay {
+  position: fixed;
+  inset: 0;
+  background: rgba(5, 5, 8, 0.88);
+  backdrop-filter: blur(20px);
+  -webkit-backdrop-filter: blur(20px);
+  z-index: var(--z-modal);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: clamp(1rem, 3vw, 2.5rem);
+  animation: fadeIn 0.35s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+}
+
+.lightboxCard {
+  position: relative;
+  max-width: 1080px;
+  width: 100%;
+  max-height: 90vh;
+  background: var(--bg-card);
+  border: 1px solid var(--border-glass);
+  border-radius: var(--radius-2xl);
+  overflow: hidden;
+  box-shadow: 0 32px 80px rgba(0, 0, 0, 0.7);
+  display: flex;
+  flex-direction: row;
+  animation: scaleIn 0.4s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+}
+
+[data-theme="dark"] .lightboxCard {
+  background: #111116;
+  border-color: rgba(255, 255, 255, 0.12);
+}
+
+.lightboxImageCol {
+  flex: 1.35;
+  background: #000000;
+  position: relative;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  overflow: hidden;
+  min-height: 380px;
+}
+
+.lightboxImage {
+  width: 100%;
+  height: 100%;
+  max-height: 85vh;
+  object-fit: contain;
+  display: block;
+}
+
+.lightboxInfoCol {
+  flex: 1;
+  padding: clamp(1.5rem, 3vw, 2.5rem);
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  overflow-y: auto;
+  background: var(--bg-primary);
+  border-left: 1px solid var(--border);
+}
+
+[data-theme="dark"] .lightboxInfoCol {
+  background: #14141A;
+  border-left-color: rgba(255, 255, 255, 0.08);
+}
+
+.lightboxHeaderRow {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 1.25rem;
+}
+
+.lightboxCounter {
+  font-family: var(--font-mono);
+  font-size: var(--fs-xs);
+  color: var(--text-tertiary);
+  letter-spacing: 0.05em;
+}
+
+.lightboxTitle {
+  font-size: clamp(1.3rem, 2.2vw, 1.85rem);
+  font-weight: var(--fw-bold);
+  color: var(--text-primary);
+  line-height: var(--lh-snug);
+  letter-spacing: var(--ls-tight);
+  margin-bottom: 1rem;
+}
+
+.lightboxMetaGrid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(130px, 1fr));
+  gap: 0.75rem;
+  margin-bottom: 1.5rem;
+  padding: 1rem;
+  background: var(--bg-tertiary);
+  border: 1px solid var(--border-light);
+  border-radius: var(--radius-md);
+}
+
+.lightboxMetaItem {
+  display: flex;
+  flex-direction: column;
+  gap: 0.25rem;
+}
+
+.lightboxMetaLabel {
+  font-size: 0.7rem;
+  font-family: var(--font-mono);
+  color: var(--text-tertiary);
+  text-transform: uppercase;
+}
+
+.lightboxMetaValue {
+  font-size: var(--fs-small);
+  font-weight: var(--fw-medium);
+  color: var(--text-primary);
+  display: flex;
+  align-items: center;
+  gap: 0.35rem;
+}
+
+.lightboxDescription {
+  font-size: var(--fs-body);
+  color: var(--text-secondary);
+  line-height: var(--lh-relaxed);
+  margin-bottom: 2rem;
+}
+
+/* Lightbox Bottom Controls */
+.lightboxControls {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding-top: 1.25rem;
+  border-top: 1px solid var(--border-light);
+}
+
+.navBtnGroup {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+}
+
+.navArrowBtn {
+  width: 42px;
+  height: 42px;
+  border-radius: 50%;
+  border: 1px solid var(--border);
+  background: var(--bg-tertiary);
+  color: var(--text-primary);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  transition: all 0.2s ease;
+}
+
+.navArrowBtn:hover {
+  background: #10B981;
+  border-color: #10B981;
+  color: #000;
+  transform: scale(1.05);
+}
+
+.closeModalBtn {
+  position: absolute;
+  top: 1rem;
+  right: 1rem;
+  width: 38px;
+  height: 38px;
+  border-radius: 50%;
+  border: 1px solid var(--border-glass);
+  background: var(--bg-card);
+  backdrop-filter: blur(12px);
+  color: var(--text-primary);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  z-index: 10;
+}
+
+.closeModalBtn:hover {
+  background: rgba(239, 68, 68, 0.2);
+  border-color: rgba(239, 68, 68, 0.5);
+  color: #EF4444;
+  transform: rotate(90deg);
+}
+
+/* ==========================================
+   RESPONSIVE BREAKPOINTS
+   ========================================== */
+
+/* Tablet (2 columns balanced) */
+@media (max-width: 1024px) {
+  .galleryWall {
+    grid-template-columns: repeat(2, 1fr);
+    gap: 1.25rem;
+  }
+
+  .galleryCol {
+    gap: 1.25rem;
+  }
+}
+
+/* Mobile Screens */
+@media (max-width: 768px) {
+  .lightboxCard {
+    flex-direction: column;
+    max-height: 88vh;
+  }
+
+  .lightboxImageCol {
+    flex: unset;
+    height: 260px;
+    min-height: 260px;
+  }
+
+  .lightboxInfoCol {
+    padding: 1.25rem;
+  }
+
+  .lightboxTitle {
+    font-size: 1.25rem;
+  }
+}
+
+@media (max-width: 640px) {
+  .galleryWall {
+    grid-template-columns: 1fr;
+    gap: 1.25rem;
+  }
+
+  .formatLandscape {
+    aspect-ratio: 16 / 11;
+  }
+
+  .formatPortrait {
+    aspect-ratio: 4 / 5;
+  }
+
+  .cardContent {
+    padding: 0.85rem;
+  }
+
+  .cardTitle {
+    font-size: 0.95rem;
+  }
+}

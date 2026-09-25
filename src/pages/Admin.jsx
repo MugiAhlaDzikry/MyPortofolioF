@@ -5,6 +5,7 @@ import SkillsAdmin from './Admin/SkillsAdmin';
 import ProjectsAdmin from './Admin/ProjectsAdmin';
 import ExperienceAdmin from './Admin/ExperienceAdmin';
 import AwardsAdmin from './Admin/AwardsAdmin';
+import GalleryAdmin from './Admin/GalleryAdmin';
 import EducationAdmin from './Admin/EducationAdmin';
 import styles from './Admin.module.css';
 
@@ -14,6 +15,7 @@ const tabs = [
   { id: 'projects', label: 'Projects', icon: '▦' },
   { id: 'experience', label: 'Experience', icon: '◈' },
   { id: 'awards', label: 'Awards', icon: '★' },
+  { id: 'gallery', label: 'Gallery (Activities)', icon: '🖼️' },
   { id: 'education', label: 'Education', icon: '🎓' },
 ];
 
@@ -27,6 +29,7 @@ export default function Admin() {
       case 'projects': return <ProjectsAdmin />;
       case 'experience': return <ExperienceAdmin />;
       case 'awards': return <AwardsAdmin />;
+      case 'gallery': return <GalleryAdmin />;
       case 'education': return <EducationAdmin />;
       default: return null;
     }
