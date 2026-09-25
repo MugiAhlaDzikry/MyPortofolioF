@@ -1,4 +1,4 @@
-import { useState, useEffect, useRef } from 'react';
+import { useState, useEffect, useLayoutEffect, useRef, useCallback } from 'react';
 import { Maximize2, ChevronLeft, ChevronRight, X } from 'lucide-react';
 import { gsap } from 'gsap';
 import { ScrollTrigger } from 'gsap/ScrollTrigger';
@@ -47,8 +47,14 @@ export const DEFAULT_ACTIVITIES = [
 export default function Gallery() {
   const [items, setItems] = useState(DEFAULT_ACTIVITIES);
   const [selectedIdx, setSelectedIdx] = useState(null);
-  const wallRef = useRef(null);
+  const sectionRef = useRef(null);
+  const frameRefs = useRef([]);
 
+  const addFrameRef = useCallback((el, idx) => {
+    if (el) frameRefs.current[idx] = el;
+  }, []);
+
+  // Fetch from Supabase / localStorage
   useEffect(() => {
     const fetchActivities = async () => {
       try {
@@ -121,45 +127,51 @@ export default function Gallery() {
     }
   }, [selectedIdx, items.length]);
 
-  // Super smooth staggered scroll entrance with clip-path reveal
-  useEffect(() => {
-    if (!wallRef.current) return;
+  // GSAP scroll-triggered entrance animation
+  useLayoutEffect(() => {
+    if (!sectionRef.current) return;
 
-    const ctx = gsap.context(() => {
-      const columns = wallRef.current.querySelectorAll('[data-gallery-col]');
+    const validFrames = frameRefs.current.filter(Boolean);
+    if (validFrames.length === 0) return;
 
-      // Animate each column with offset stagger for a cascading waterfall effect
-      columns.forEach((col, colIdx) => {
-        const frames = col.querySelectorAll('[data-gallery-frame]');
+    // Set initial state immediately
+    gsap.set(validFrames, {
+      opacity: 0,
+      y: 80,
+      scale: 0.92
+    });
 
-        gsap.fromTo(
-          frames,
-          {
-            opacity: 0,
-            y: 60 + colIdx * 15,
-            scale: 0.94,
-            clipPath: 'inset(12% 0% 12% 0%)',
-          },
-          {
-            opacity: 1,
-            y: 0,
-            scale: 1,
-            clipPath: 'inset(0% 0% 0% 0%)',
-            duration: 1.2,
-            stagger: 0.15,
-            delay: colIdx * 0.1,
-            ease: 'power4.out',
-            scrollTrigger: {
-              trigger: wallRef.current,
-              start: 'top 88%',
-              toggleActions: 'play none none none'
-            }
-          }
-        );
+    // Column-aware stagger: frames in cols get cascading delays
+    // Frame order: [col0-row0, col0-row1, col1-row0, col1-row1, ...]
+    // We want col-based waterfall, so stagger delay per frame varies
+    const tl = gsap.timeline({
+      scrollTrigger: {
+        trigger: sectionRef.current,
+        start: 'top 80%',
+        toggleActions: 'play none none none'
+      }
+    });
+
+    validFrames.forEach((frame, i) => {
+      const colIdx = Math.floor(i / 2);
+      const rowIdx = i % 2;
+      const frameDelay = colIdx * 0.12 + rowIdx * 0.18;
+
+      tl.to(frame, {
+        opacity: 1,
+        y: 0,
+        scale: 1,
+        duration: 1.0,
+        ease: 'power3.out'
+      }, frameDelay);
+    });
+
+    return () => {
+      tl.kill();
+      ScrollTrigger.getAll().forEach(st => {
+        if (st.trigger === sectionRef.current) st.kill();
       });
-    }, wallRef);
-
-    return () => ctx.revert();
+    };
   }, [items]);
 
   // Build 4 columns for "The Balanced" pattern
@@ -173,7 +185,7 @@ export default function Gallery() {
   const activeItem = selectedIdx !== null ? items[selectedIdx] : null;
 
   return (
-    <section className={`section ${styles.gallerySection}`} id="gallery">
+    <section className={`section ${styles.gallerySection}`} id="gallery" ref={sectionRef}>
       <div className="container">
         {/* Header */}
         <div className={styles.sectionHeader}>
@@ -193,9 +205,9 @@ export default function Gallery() {
         </div>
 
         {/* Tight Mosaic Grid */}
-        <div className={styles.galleryWall} ref={wallRef}>
+        <div className={styles.galleryWall}>
           {columns.map((col, colIdx) => (
-            <div key={colIdx} className={styles.galleryCol} data-gallery-col>
+            <div key={colIdx} className={styles.galleryCol}>
               {col.map((item, rowIdx) => {
                 const globalIdx = colIdx * 2 + rowIdx;
                 const isPortrait = (colIdx % 2 === 0 && rowIdx === 1) || (colIdx % 2 === 1 && rowIdx === 0);
@@ -204,8 +216,8 @@ export default function Gallery() {
                 return (
                   <div
                     key={item.id || globalIdx}
+                    ref={(el) => addFrameRef(el, globalIdx)}
                     className={`${styles.frameItem} ${formatClass}`}
-                    data-gallery-frame
                     onClick={() => setSelectedIdx(globalIdx)}
                     role="button"
                     tabIndex={0}
@@ -235,7 +247,7 @@ export default function Gallery() {
         </div>
       </div>
 
-      {/* Minimal Lightbox — just the photo */}
+      {/* Minimal Lightbox */}
       {selectedIdx !== null && activeItem && (
         <div
           className={styles.lightboxOverlay}
@@ -244,12 +256,10 @@ export default function Gallery() {
           role="dialog"
           aria-modal="true"
         >
-          {/* Counter */}
           <span className={styles.lightboxCounter}>
             {selectedIdx + 1} / {items.length}
           </span>
 
-          {/* Close */}
           <button
             className={styles.closeModalBtn}
             onClick={() => setSelectedIdx(null)}
@@ -258,7 +268,6 @@ export default function Gallery() {
             <X size={20} />
           </button>
 
-          {/* Prev */}
           <button
             className={`${styles.navArrowBtn} ${styles.navPrev}`}
             onClick={(e) => {
@@ -270,7 +279,6 @@ export default function Gallery() {
             <ChevronLeft size={22} />
           </button>
 
-          {/* Photo */}
           <img
             src={activeItem.image_url}
             alt={`Activity photo ${selectedIdx + 1}`}
@@ -278,7 +286,6 @@ export default function Gallery() {
             onClick={(e) => e.stopPropagation()}
           />
 
-          {/* Next */}
           <button
             className={`${styles.navArrowBtn} ${styles.navNext}`}
             onClick={(e) => {
