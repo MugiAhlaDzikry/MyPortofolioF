@@ -121,29 +121,42 @@ export default function Gallery() {
     }
   }, [selectedIdx, items.length]);
 
-  // Staggered scroll entrance
+  // Super smooth staggered scroll entrance with clip-path reveal
   useEffect(() => {
     if (!wallRef.current) return;
 
     const ctx = gsap.context(() => {
-      const frames = wallRef.current.querySelectorAll('[data-gallery-frame]');
-      gsap.fromTo(
-        frames,
-        { opacity: 0, y: 30, scale: 0.97 },
-        {
-          opacity: 1,
-          y: 0,
-          scale: 1,
-          duration: 0.8,
-          stagger: 0.08,
-          ease: 'power3.out',
-          scrollTrigger: {
-            trigger: wallRef.current,
-            start: 'top 85%',
-            toggleActions: 'play none none none'
+      const columns = wallRef.current.querySelectorAll('[data-gallery-col]');
+
+      // Animate each column with offset stagger for a cascading waterfall effect
+      columns.forEach((col, colIdx) => {
+        const frames = col.querySelectorAll('[data-gallery-frame]');
+
+        gsap.fromTo(
+          frames,
+          {
+            opacity: 0,
+            y: 60 + colIdx * 15,
+            scale: 0.94,
+            clipPath: 'inset(12% 0% 12% 0%)',
+          },
+          {
+            opacity: 1,
+            y: 0,
+            scale: 1,
+            clipPath: 'inset(0% 0% 0% 0%)',
+            duration: 1.2,
+            stagger: 0.15,
+            delay: colIdx * 0.1,
+            ease: 'power4.out',
+            scrollTrigger: {
+              trigger: wallRef.current,
+              start: 'top 88%',
+              toggleActions: 'play none none none'
+            }
           }
-        }
-      );
+        );
+      });
     }, wallRef);
 
     return () => ctx.revert();
@@ -182,7 +195,7 @@ export default function Gallery() {
         {/* Tight Mosaic Grid */}
         <div className={styles.galleryWall} ref={wallRef}>
           {columns.map((col, colIdx) => (
-            <div key={colIdx} className={styles.galleryCol}>
+            <div key={colIdx} className={styles.galleryCol} data-gallery-col>
               {col.map((item, rowIdx) => {
                 const globalIdx = colIdx * 2 + rowIdx;
                 const isPortrait = (colIdx % 2 === 0 && rowIdx === 1) || (colIdx % 2 === 1 && rowIdx === 0);

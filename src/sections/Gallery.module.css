@@ -50,7 +50,6 @@
   position: relative;
   z-index: 1;
   width: 100%;
-  border-radius: var(--radius-lg);
   overflow: hidden;
 }
 
@@ -88,13 +87,14 @@
   height: 100%;
   object-fit: cover;
   display: block;
-  transition: transform 0.7s cubic-bezier(0.16, 1, 0.3, 1),
-              filter 0.5s ease;
+  will-change: transform;
+  transition: transform 1s cubic-bezier(0.16, 1, 0.3, 1),
+              filter 0.6s cubic-bezier(0.16, 1, 0.3, 1);
 }
 
 .frameItem:hover .photoImage {
-  transform: scale(1.06);
-  filter: brightness(1.05);
+  transform: scale(1.08);
+  filter: brightness(1.08);
 }
 
 /* Subtle dark overlay on hover */
@@ -102,13 +102,13 @@
   position: absolute;
   inset: 0;
   background: rgba(0, 0, 0, 0);
-  transition: background 0.4s ease;
+  transition: background 0.6s cubic-bezier(0.16, 1, 0.3, 1);
   z-index: 1;
   pointer-events: none;
 }
 
 .frameItem:hover .photoOverlay {
-  background: rgba(0, 0, 0, 0.15);
+  background: rgba(0, 0, 0, 0.18);
 }
 
 /* Expand hint icon on hover */
@@ -116,7 +116,7 @@
   position: absolute;
   top: 50%;
   left: 50%;
-  transform: translate(-50%, -50%) scale(0.7);
+  transform: translate(-50%, -50%) scale(0.6);
   width: 44px;
   height: 44px;
   border-radius: 50%;
@@ -127,7 +127,8 @@
   align-items: center;
   justify-content: center;
   opacity: 0;
-  transition: opacity 0.35s ease, transform 0.4s cubic-bezier(0.16, 1, 0.3, 1);
+  transition: opacity 0.5s cubic-bezier(0.16, 1, 0.3, 1),
+              transform 0.6s cubic-bezier(0.16, 1, 0.3, 1);
   z-index: 3;
 }
 
@@ -159,7 +160,6 @@
   max-height: 88vh;
   object-fit: contain;
   display: block;
-  border-radius: 4px;
   animation: scaleIn 0.35s cubic-bezier(0.16, 1, 0.3, 1) forwards;
 }
 
@@ -251,6 +251,5 @@
   .galleryWall {
     grid-template-columns: repeat(2, 1fr);
     gap: 3px;
-    border-radius: var(--radius-md);
   }
 }
