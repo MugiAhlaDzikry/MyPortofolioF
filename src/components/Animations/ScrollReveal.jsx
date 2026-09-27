@@ -14,6 +14,7 @@ export default function ScrollReveal({
   stagger = 0,
   triggerStart = 'top 85%',
   once = true,
+  toggleActions = null,
 }) {
   const ref = useRef(null);
 
@@ -45,6 +46,10 @@ export default function ScrollReveal({
         fromVars.y = distance;
     }
 
+    const activeToggleActions = toggleActions || (
+      once ? 'play none none none' : 'play none none reverse'
+    );
+
     const ctx = gsap.context(() => {
       gsap.fromTo(targets, fromVars, {
         opacity: 1,
@@ -58,15 +63,13 @@ export default function ScrollReveal({
         scrollTrigger: {
           trigger: el,
           start: triggerStart,
-          toggleActions: once 
-            ? 'play none none none'
-            : 'play reverse play reverse',
+          toggleActions: activeToggleActions,
         },
       });
     });
 
     return () => ctx.revert();
-  }, [direction, delay, duration, distance, stagger, triggerStart, once]);
+  }, [direction, delay, duration, distance, stagger, triggerStart, once, toggleActions]);
 
   return (
     <div ref={ref} className={className}>

@@ -59,6 +59,11 @@
   width: 100%;
 }
 
+.frameWrapper {
+  width: 100%;
+  display: block;
+}
+
 /* ==========================================
    PHOTO ITEM — No border, no padding, edge-to-edge
    ========================================== */

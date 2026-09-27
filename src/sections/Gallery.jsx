@@ -1,14 +1,34 @@
 import { useState, useEffect } from 'react';
 import { Maximize2, ChevronLeft, ChevronRight, X } from 'lucide-react';
+import { gsap } from 'gsap';
+import { ScrollTrigger } from 'gsap/ScrollTrigger';
 import ScrollReveal from '../components/Animations/ScrollReveal';
 import { supabase } from '../lib/supabaseClient';
 import { getLenis } from '../hooks/useLenis';
 import { DEFAULT_ACTIVITIES } from '../data/defaultActivities';
 import styles from './Gallery.module.css';
 
+gsap.registerPlugin(ScrollTrigger);
+
 export default function Gallery() {
   const [items, setItems] = useState(DEFAULT_ACTIVITIES);
   const [selectedIdx, setSelectedIdx] = useState(null);
+
+  // Refresh ScrollTrigger positions after images and upper sections load
+  useEffect(() => {
+    const refreshTimer = setTimeout(() => {
+      ScrollTrigger.refresh();
+    }, 600);
+
+    const secondTimer = setTimeout(() => {
+      ScrollTrigger.refresh();
+    }, 1500);
+
+    return () => {
+      clearTimeout(refreshTimer);
+      clearTimeout(secondTimer);
+    };
+  }, [items]);
 
   useEffect(() => {
     const fetchActivities = async () => {
@@ -97,15 +117,15 @@ export default function Gallery() {
       <div className="container">
         {/* Header */}
         <div className={styles.sectionHeader}>
-          <ScrollReveal triggerStart="top 75%">
+          <ScrollReveal triggerStart="top 85%" once={false} toggleActions="play none none reverse">
             <div className="section-label">GALLERY</div>
           </ScrollReveal>
 
-          <ScrollReveal delay={0.05} triggerStart="top 75%">
+          <ScrollReveal delay={0.05} triggerStart="top 85%" once={false} toggleActions="play none none reverse">
             <h2 className={styles.heading}>Activity Highlights</h2>
           </ScrollReveal>
 
-          <ScrollReveal delay={0.1} triggerStart="top 75%">
+          <ScrollReveal delay={0.1} triggerStart="top 85%" once={false} toggleActions="play none none reverse">
             <p className={styles.subtext}>
               Dokumentasi visual momen dan kegiatan besar selama perjalanan saya di dunia teknologi dan komunitas.
             </p>
@@ -122,16 +142,19 @@ export default function Gallery() {
                 const formatClass = isPortrait ? styles.formatPortrait : styles.formatLandscape;
 
                 // Column-aware cascade delay
-                const animDelay = colIdx * 0.1 + rowIdx * 0.15;
+                const animDelay = colIdx * 0.08 + rowIdx * 0.12;
 
                 return (
                   <ScrollReveal
                     key={item.id || globalIdx}
+                    className={styles.frameWrapper}
                     delay={animDelay}
                     direction="up"
-                    distance={50}
-                    duration={0.9}
-                    triggerStart="top 75%"
+                    distance={60}
+                    duration={0.85}
+                    triggerStart="top 85%"
+                    once={false}
+                    toggleActions="play none none reverse"
                   >
                     <div
                       className={`${styles.frameItem} ${formatClass}`}
