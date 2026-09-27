@@ -131,15 +131,15 @@ export default function Gallery() {
       <div className="container">
         {/* Header */}
         <div className={styles.sectionHeader}>
-          <ScrollReveal>
+          <ScrollReveal triggerStart="top 75%">
             <div className="section-label">GALLERY</div>
           </ScrollReveal>
 
-          <ScrollReveal delay={0.05}>
+          <ScrollReveal delay={0.05} triggerStart="top 75%">
             <h2 className={styles.heading}>Activity Highlights</h2>
           </ScrollReveal>
 
-          <ScrollReveal delay={0.1}>
+          <ScrollReveal delay={0.1} triggerStart="top 75%">
             <p className={styles.subtext}>
               Dokumentasi visual momen dan kegiatan besar selama perjalanan saya di dunia teknologi dan komunitas.
             </p>
@@ -165,6 +165,7 @@ export default function Gallery() {
                     direction="up"
                     distance={50}
                     duration={0.9}
+                    triggerStart="top 75%"
                   >
                     <div
                       className={`${styles.frameItem} ${formatClass}`}
