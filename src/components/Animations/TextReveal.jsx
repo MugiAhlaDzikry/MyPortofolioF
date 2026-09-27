@@ -14,6 +14,8 @@ export default function TextReveal({
   className = '',
   tag = 'div',
   triggerStart = 'top 85%',
+  once = false,
+  toggleActions = null,
 }) {
   const containerRef = useRef(null);
   const Tag = tag;
@@ -45,7 +47,7 @@ export default function TextReveal({
       });
     } else if (type === 'words') {
       const words = text.split(' ');
-      words.forEach((word, i) => {
+      words.forEach((word) => {
         const wrapper = document.createElement('span');
         wrapper.style.display = 'inline-block';
         wrapper.style.overflow = 'hidden';
@@ -75,6 +77,10 @@ export default function TextReveal({
       elements.push(inner);
     }
 
+    const activeToggleActions = toggleActions || (
+      once ? 'play none none none' : 'play none none reverse'
+    );
+
     const ctx = gsap.context(() => {
       gsap.fromTo(elements, 
         { 
@@ -93,14 +99,14 @@ export default function TextReveal({
           scrollTrigger: {
             trigger: el,
             start: triggerStart,
-            toggleActions: 'play none none reverse',
+            toggleActions: activeToggleActions,
           },
         }
       );
     });
 
     return () => ctx.revert();
-  }, [children, type, stagger, delay, duration, y, triggerStart]);
+  }, [children, type, stagger, delay, duration, y, triggerStart, once, toggleActions]);
 
   return (
     <Tag ref={containerRef} className={className}>

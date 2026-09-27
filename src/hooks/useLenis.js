@@ -29,17 +29,22 @@ export function useLenis() {
 
     gsap.ticker.lagSmoothing(0);
 
-    // Recalculate trigger points after async content settles
-    const refreshTimer = setTimeout(() => {
-      ScrollTrigger.refresh();
-    }, 800);
+    // Auto-refresh ScrollTrigger whenever page content/images load and change layout height
+    let refreshDebounce;
+    const resizeObserver = new ResizeObserver(() => {
+      clearTimeout(refreshDebounce);
+      refreshDebounce = setTimeout(() => {
+        ScrollTrigger.refresh();
+      }, 100);
+    });
 
-    const onResize = () => ScrollTrigger.refresh();
-    window.addEventListener('resize', onResize);
+    if (document.body) {
+      resizeObserver.observe(document.body);
+    }
 
     return () => {
-      clearTimeout(refreshTimer);
-      window.removeEventListener('resize', onResize);
+      clearTimeout(refreshDebounce);
+      resizeObserver.disconnect();
       lenisInstance.destroy();
       lenisInstance = null;
     };
