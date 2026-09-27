@@ -62,7 +62,7 @@ export default function Experience() {
               scrollTrigger: {
                 trigger: node,
                 start: 'top 75%',
-                toggleActions: 'play none none none',
+                toggleActions: 'play none none reverse',
               },
             }
           );

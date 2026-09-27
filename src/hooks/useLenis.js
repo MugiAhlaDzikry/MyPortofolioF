@@ -29,7 +29,17 @@ export function useLenis() {
 
     gsap.ticker.lagSmoothing(0);
 
+    // Recalculate trigger points after async content settles
+    const refreshTimer = setTimeout(() => {
+      ScrollTrigger.refresh();
+    }, 800);
+
+    const onResize = () => ScrollTrigger.refresh();
+    window.addEventListener('resize', onResize);
+
     return () => {
+      clearTimeout(refreshTimer);
+      window.removeEventListener('resize', onResize);
       lenisInstance.destroy();
       lenisInstance = null;
     };

@@ -93,7 +93,7 @@ export default function TextReveal({
           scrollTrigger: {
             trigger: el,
             start: triggerStart,
-            toggleActions: 'play none none none',
+            toggleActions: 'play none none reverse',
           },
         }
       );

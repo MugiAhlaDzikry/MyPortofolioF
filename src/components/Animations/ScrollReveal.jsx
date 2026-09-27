@@ -13,7 +13,7 @@ export default function ScrollReveal({
   className = '',
   stagger = 0,
   triggerStart = 'top 85%',
-  once = true,
+  once = false,
   toggleActions = null,
 }) {
   const ref = useRef(null);
