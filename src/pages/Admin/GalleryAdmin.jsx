@@ -2,7 +2,7 @@ import { useState, useEffect } from 'react';
 import { supabase } from '../../lib/supabaseClient';
 import styles from '../Admin.module.css';
 import ImageCropperModal from '../../components/Admin/ImageCropperModal';
-import { DEFAULT_ACTIVITIES } from '../../sections/Gallery';
+import { DEFAULT_ACTIVITIES } from '../../data/defaultActivities';
 
 const SLOT_NAMES = [
   'Kolom 1 - Atas (Landscape)',
