@@ -41,6 +41,7 @@ export default function Navbar() {
   const [isOpen, setIsOpen] = useState(false);
   const isOpenRef = useRef(false);
   const [isScrolled, setIsScrolled] = useState(false);
+  const [isHidden, setIsHidden] = useState(false);
   const [theme, setTheme] = useState('light');
   const [isAnimating, setIsAnimating] = useState(false);
   const [socialLinks, setSocialLinks] = useState({
@@ -104,23 +105,40 @@ export default function Navbar() {
       // Animate navbar in on load
       gsap.fromTo(navRef.current,
         { y: -100, opacity: 0 },
-        { y: 0, opacity: 1, duration: 1, delay: 0.5, ease: 'power3.out' }
+        { y: 0, opacity: 1, duration: 1, delay: 0.5, ease: 'power3.out', clearProps: 'all' }
       );
     });
 
     // Show/hide on scroll
     let lastScroll = 0;
+    let currentIsScrolled = false;
+    let currentIsHidden = false;
+
     const handleScroll = () => {
       const currentScroll = window.scrollY;
-      setIsScrolled(currentScroll > 50);
+      
+      const newIsScrolled = currentScroll > 50;
+      if (newIsScrolled !== currentIsScrolled) {
+        setIsScrolled(newIsScrolled);
+        currentIsScrolled = newIsScrolled;
+      }
 
       // Do not hide navbar while mobile menu is open
-      if (isOpenRef.current) return;
+      if (isOpenRef.current) {
+        lastScroll = currentScroll;
+        return;
+      }
 
       if (currentScroll > lastScroll && currentScroll > 200) {
-        navRef.current?.classList.add(styles.hidden);
+        if (!currentIsHidden) {
+          setIsHidden(true);
+          currentIsHidden = true;
+        }
       } else {
-        navRef.current?.classList.remove(styles.hidden);
+        if (currentIsHidden) {
+          setIsHidden(false);
+          currentIsHidden = false;
+        }
       }
       lastScroll = currentScroll;
     };
@@ -205,7 +223,7 @@ export default function Navbar() {
     <>
       <nav
         ref={navRef}
-        className={`${styles.navbar} ${isScrolled ? styles.scrolled : ''} ${isOpen ? styles.menuOpen : ''}`}
+        className={`${styles.navbar} ${isScrolled ? styles.scrolled : ''} ${isOpen ? styles.menuOpen : ''} ${isHidden ? styles.hidden : ''}`}
         id="main-navbar"
       >
         <div className={styles.navContent}>
