@@ -38,6 +38,8 @@ html {
   text-rendering: optimizeLegibility;
   scroll-behavior: auto;
   color-scheme: light dark;
+  overflow-x: hidden;
+  max-width: 100%;
 }
 
 html.lenis,
@@ -55,6 +57,11 @@ html.lenis body {
 
 .lenis.lenis-stopped {
   overflow: hidden;
+}
+
+main {
+  overflow-x: hidden;
+  width: 100%;
 }
 
 body {
