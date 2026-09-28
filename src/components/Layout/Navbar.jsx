@@ -41,7 +41,6 @@ export default function Navbar() {
   const [isOpen, setIsOpen] = useState(false);
   const isOpenRef = useRef(false);
   const [isScrolled, setIsScrolled] = useState(false);
-  const [isHidden, setIsHidden] = useState(false);
   const [theme, setTheme] = useState('light');
   const [isAnimating, setIsAnimating] = useState(false);
   const [socialLinks, setSocialLinks] = useState({
@@ -109,10 +108,8 @@ export default function Navbar() {
       );
     });
 
-    // Show/hide on scroll
-    let lastScroll = 0;
+    // Background blur on scroll
     let currentIsScrolled = false;
-    let currentIsHidden = false;
 
     const handleScroll = () => {
       const currentScroll = window.scrollY;
@@ -122,25 +119,6 @@ export default function Navbar() {
         setIsScrolled(newIsScrolled);
         currentIsScrolled = newIsScrolled;
       }
-
-      // Do not hide navbar while mobile menu is open
-      if (isOpenRef.current) {
-        lastScroll = currentScroll;
-        return;
-      }
-
-      if (currentScroll > lastScroll && currentScroll > 200) {
-        if (!currentIsHidden) {
-          setIsHidden(true);
-          currentIsHidden = true;
-        }
-      } else {
-        if (currentIsHidden) {
-          setIsHidden(false);
-          currentIsHidden = false;
-        }
-      }
-      lastScroll = currentScroll;
     };
 
     window.addEventListener('scroll', handleScroll, { passive: true });
@@ -223,7 +201,7 @@ export default function Navbar() {
     <>
       <nav
         ref={navRef}
-        className={`${styles.navbar} ${isScrolled ? styles.scrolled : ''} ${isOpen ? styles.menuOpen : ''} ${isHidden ? styles.hidden : ''}`}
+        className={`${styles.navbar} ${isScrolled ? styles.scrolled : ''} ${isOpen ? styles.menuOpen : ''}`}
         id="main-navbar"
       >
         <div className={styles.navContent}>
